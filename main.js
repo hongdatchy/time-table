@@ -220,8 +220,21 @@ let myList = [
         },
         location: "inperial "
     },
+    {
+        classId: 0,
+        subjectId : "",
+        name: "FrontEnd",
+        isTheoryClass: false,
+        week: ["2","3","4","5","6","7","8","9","11","12","13","14","15","16","17","18"],
+        time:{
+            indexDay: 3,
+            start: "15:00",
+            end: "17:30",
+        },
+        location: "inperial "
+    },
 ]
-let week = 1, dayStart = new Date("9-7-2020");
+let week = 1, dayStart = new Date("9-7-2020"), nowWeek;
 let previous = document.getElementById("previous");
 let next = document.getElementById("next");
 let showWeek = document.getElementById("show-week");
@@ -230,6 +243,7 @@ let afternoon = document.getElementsByClassName("afternoon");
 let evening = document.getElementsByClassName("evening");
 function getweek(){
     week += Math.floor((new Date().getTime() - dayStart.getTime())/(7*1000*24*3600));
+    nowWeek = week;
 }
 getweek();
 function render(week){
@@ -281,6 +295,11 @@ previous.onclick = function(){
 }
 function updateShowWeek(week){
     showWeek.innerHTML = "Tuần " + week;
+    if(week == nowWeek){
+        showWeek.classList.add("bg-danger")
+    }else{
+        showWeek.classList.remove("bg-danger")
+    }
 }
 function myMap(list){
     return list.map(function(item){
