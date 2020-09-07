@@ -10,14 +10,16 @@ li{
         min-height: 480px;
     }
     #control{
-        position: fixed;
-        bottom: 0;
-        left: 50%;
-        margin-left: -150px;
-        width: 250px;
+        bottom: 0px !important;
     }
 }
-
+#control{
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    margin-left: -150px;
+    width: 250px;
+}
 #control > div{
     width: 100%;
 }

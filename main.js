@@ -267,10 +267,10 @@ function render(week){
             return Number(item.time.end.split(":")[0]) < 12;
         })
         let thisAfternoonList = thisDayList.filter(function(item){
-            return Number(item.time.end.split(":")[0]) >= 12 && Number(item.time.end.split(":")[0]) < 17;
+            return Number(item.time.start.split(":")[0]) >= 12 && Number(item.time.end.split(":")[0]) <= 17;
         })
         let thisEveningList = thisDayList.filter(function(item){
-            return Number(item.time.end.split(":")[0]) >=17;
+            return Number(item.time.start.split(":")[0]) >=17;
         })
         morning[i].innerHTML = myMap(thisMorningList).join("");
         afternoon[i].innerHTML = myMap(thisAfternoonList).join("");
