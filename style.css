@@ -12,7 +12,7 @@ li{
 }
 #control{
     position: fixed;
-    bottom: 20px;
+    bottom: 0px;
     left: 50%;
     margin-left: -150px;
     width: 250px;
