@@ -241,6 +241,12 @@ let showWeek = document.getElementById("show-week");
 let morning = document.getElementsByClassName("morning");
 let afternoon = document.getElementsByClassName("afternoon");
 let evening = document.getElementsByClassName("evening");
+let today = document.getElementById("today");
+
+setInterval(function(){
+    let date = new Date();
+    today.innerHTML = `Time : <span class ="text-danger">${date.getHours() < 10 ? "0" + date.getHours():date.getHours()}:${date.getMinutes() < 10 ? "0" + date.getMinutes():date.getMinutes()}:${date.getSeconds() < 10 ? "0" + date.getSeconds():date.getSeconds()}</span> không ngừng lại nhưng trình độ English thì vẫn dậm chân tại chỗ :)`;
+}, 1000);
 function getweek(){
     week += Math.floor((new Date().getTime() - dayStart.getTime())/(7*1000*24*3600));
     nowWeek = week;
