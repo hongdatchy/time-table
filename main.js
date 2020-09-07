@@ -181,13 +181,53 @@ let myList = [
         },
         location: "San1"
     },
+    {
+        classId: 0,
+        subjectId : "",
+        name: "Java lv3",
+        isTheoryClass: false,
+        week: ["1","2","3","4","5","6","7","8","9","11","12","13","14","15","16","17","18"],
+        time:{
+            indexDay: 3,
+            start: "17:45",
+            end: "19:30",
+        },
+        location: "inperial "
+    },
+    {
+        classId: 0,
+        subjectId : "",
+        name: "Java lv3",
+        isTheoryClass: false,
+        week: ["1","2","3","4","5","6","7","8","9","11","12","13","14","15","16","17","18"],
+        time:{
+            indexDay: 5,
+            start: "17:45",
+            end: "19:30",
+        },
+        location: "inperial "
+    },
+    {
+        classId: 0,
+        subjectId : "",
+        name: "Họp lab",
+        isTheoryClass: false,
+        week: ["1"],
+        time:{
+            indexDay: 3,
+            start: "16:30",
+            end: "17:30",
+        },
+        location: "inperial "
+    },
 ]
-
 let week = 1, dayStart = new Date("9-7-2020");
-let ul = document.getElementsByTagName("ul");
 let previous = document.getElementById("previous");
 let next = document.getElementById("next");
 let showWeek = document.getElementById("show-week");
+let morning = document.getElementsByClassName("morning");
+let afternoon = document.getElementsByClassName("afternoon");
+let evening = document.getElementsByClassName("evening");
 function getweek(){
     week += Math.floor((new Date().getTime() - dayStart.getTime())/(7*1000*24*3600));
 }
@@ -201,32 +241,26 @@ function render(week){
         }
         return false;
     })
-    console.log(thisWeekList);
-    for(let i=0; i< ul.length; i++){
-        ul[i].innerHTML = thisWeekList
+    for(let i=0; i< 7; i++){
+        let thisDayList = thisWeekList
         .filter(function(item){
             return item.time.indexDay == i+1;
         })
         .sort(function(a,b){
             return a.time.start.split(":")[0] - b.time.start.split(":")[0];
         })
-        .map(function(item){
-            return `<li class=${item.isTheoryClass? "bg-success": "bg-warning"}>
-                <div class="time">
-                    ${item.time.start}-${item.time.end}
-                </div>
-                <div class="name">
-                    ${item.name}
-                </div>
-                <div class="location">
-                    ${item.location}
-                </div>
-                <div class="id">
-                    ${item.subjectId}-${item.classId}
-                </div>
-            </li>`
+        let thisMorningList = thisDayList.filter(function(item){
+            return Number(item.time.end.split(":")[0]) < 12;
         })
-        .join("");
+        let thisAfternoonList = thisDayList.filter(function(item){
+            return Number(item.time.end.split(":")[0]) >= 12 && Number(item.time.end.split(":")[0]) < 17;
+        })
+        let thisEveningList = thisDayList.filter(function(item){
+            return Number(item.time.end.split(":")[0]) >=17;
+        })
+        morning[i].innerHTML = myMap(thisMorningList).join("");
+        afternoon[i].innerHTML = myMap(thisAfternoonList).join("");
+        evening[i].innerHTML = myMap(thisEveningList).join("");
     }
 }
 render(week);
@@ -248,3 +282,21 @@ previous.onclick = function(){
 function updateShowWeek(week){
     showWeek.innerHTML = "Tuần " + week;
 }
+function myMap(list){
+    return list.map(function(item){
+        return `<li class=${item.isTheoryClass? "bg-success": "bg-warning"}>
+                    <div class="time">
+                    ${item.time.start} - ${item.time.end}
+                    </div>
+                    <div class="name">
+                        ${item.name}
+                    </div>
+                    <div class="location">
+                        ${item.location}
+                    </div>
+                </li>`
+    })
+}
+{/* <div class="id">
+    ${item.subjectId}${item.subjectId == ""|| item.classId == 0 ? "":" - "}${item.classId == 0 ? "" : item.classId}
+</div> */}
