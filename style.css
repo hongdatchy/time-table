@@ -9,9 +9,6 @@ li{
     table{
         min-height: 480px;
     }
-    #control{
-        bottom: 0px !important;
-    }
 }
 #control{
     position: fixed;
