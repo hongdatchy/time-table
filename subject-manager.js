@@ -131,9 +131,8 @@ mySave.onclick = function(){
     subject.location = locationInput.value;
     subject.time.start = timeInput.value.split("-")[0];
     subject.time.end = timeInput.value.split("-")[1];
-    console.log(subject);
     checkTime(timeInput)
-    if(checkLength(nameInput)&& checkLength2(classIdInput)&&checkLength2(subjectIdInput)&& checkLength(locationInput) && checkDayOfWeek(dayInput)&& checkTime(timeInput) && checkLength(weekInput)
+    if(checkLength(nameInput)&& checkLength2(classIdInput)&&checkLength2(subjectIdInput)&& checkLength(locationInput) && checkDayOfWeek(dayInput)&& checkTime(timeInput) && checkWeek(weekInput)
     ){
         if(checkAction == "create"){
             myList.push(subject);

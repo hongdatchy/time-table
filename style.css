@@ -11,10 +11,10 @@ li{
     }
     #site-time-table #control{
         left: 0;
-    margin-left: 0;
-    width: 100%;
+        margin-left: 0;
+        width: 100%;
     }
-    #crete-subject{
+    #btn-subject-manager{
         display: none;
     }
 }
@@ -30,7 +30,6 @@ li{
 }
 #btn-subject-manager{
     position: fixed;
-    bottom: 0px;
 }
 tr{
     height: 91px !important;
@@ -39,4 +38,9 @@ a{
     display: block;
     position: fixed;
     bottom: 0;
+    right: 0;
+}
+#today{
+    min-height: 40px;
+    margin-bottom: 0;
 }

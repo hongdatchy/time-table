@@ -13,16 +13,16 @@ let password = "hongdat10";
 let userameInput = document.getElementById("username-input");
 let passwordInput = document.getElementById("password-input");
 let btnLogin = document.getElementById("btn-login");
-
-ajaxGet("https://5f5741881a07d600167e693d.mockapi.io/api/v1/product").then(function(resole){
-    myList = resole;
-    console.log(myList);
-    render(week);
-})
 setInterval(function(){
     let date = new Date();
     today.innerHTML = `Thứ ${date.getDay()} <span class ="text-danger">${date.getHours() < 10 ? "0" + date.getHours():date.getHours()}:${date.getMinutes() < 10 ? "0" + date.getMinutes():date.getMinutes()}:${date.getSeconds() < 10 ? "0" + date.getSeconds():date.getSeconds()}</span> Time không dừng lại => đừng dại ngồi chơi :))`;
 }, 1000);
+ajaxGet("https://5f5741881a07d600167e693d.mockapi.io/api/v1/product").then(function(resole){
+    myList = resole;
+    console.log(myList);
+    // render(week);
+})
+
 function getweek(){
     week += Math.floor((new Date().getTime() - dayStart.getTime())/(7*1000*24*3600));
     nowWeek = week;
@@ -59,7 +59,21 @@ function render(week){
         evening[i].innerHTML = myMap(thisEveningList).join("");
     }
 }
-
+function myMap(list){
+    return list.map(function(item){
+        return `<li class=${item.isTheoryClass? "bg-success": "bg-warning"}>
+                    <div class="time">
+                    ${item.time.start} - ${item.time.end}
+                    </div>
+                    <div class="name">
+                        ${item.name}
+                    </div>
+                    <div class="location">
+                        ${item.location}
+                    </div>
+                </li>`
+    })
+}
 updateShowWeek(week);
 next.onclick = function(){
     if(week<18){
@@ -83,19 +97,5 @@ function updateShowWeek(week){
         showWeek.classList.remove("bg-danger")
     }
 }
-function myMap(list){
-    return list.map(function(item){
-        return `<li class=${item.isTheoryClass? "bg-success": "bg-warning"}>
-                    <div class="time">
-                    ${item.time.start} - ${item.time.end}
-                    </div>
-                    <div class="name">
-                        ${item.name}
-                    </div>
-                    <div class="location">
-                        ${item.location}
-                    </div>
-                </li>`
-    })
-}
+
 

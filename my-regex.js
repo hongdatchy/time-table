@@ -33,3 +33,13 @@ function checkLength2(input){
     input.classList.replace("is-valid", "is-invalid");
     return false;
 }
+
+// chưa làm xong regex cho weekInput thay if(true) thành regex
+function checkWeek(input){
+    if(true) {
+        input.classList.replace("is-invalid", "is-valid");
+        return true;
+    }
+    input.classList.replace("is-valid", "is-invalid");
+    return false;
+}
