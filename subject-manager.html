@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="subject-mager.css">
+</head>
+
+<body>
+    <div class="modal fade" id="create-subject-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Lưu môn học</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex flex-wrap">
+                    <div class="form-group row col-6">
+                        <label class="col-sm-3 col-form-label">Tên môn</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control is-valid" id="name-input">
+                            <div class="invalid-feedback">
+                                0 < val.length < 20
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row col-6">
+                        <label class="col-sm-3 col-form-label">Mã học phần</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control is-valid" id="subject-id-input">
+                            <div class="invalid-feedback">
+                                val.length < 10
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row col-6">
+                        <label class="col-sm-3 col-form-label">Mã lớp</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control is-valid" id="class-id-input">
+                            <div class="invalid-feedback">
+                                val.length < 10
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row col-6">
+                        <label class="col-sm-3 col-form-label">Tuần học</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control is-valid" id="week-input">
+                            <div class="invalid-feedback">
+                                0 < val.length < 20
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row col-6">
+                        <label class="col-sm-3 col-form-label">Thứ</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control is-valid" id="day-input">
+                            <div class="invalid-feedback">
+                                1 <= val <=7 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row col-6">
+                        <label class="col-sm-3 col-form-label">Thời gian</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control is-valid" id="time-input">
+                            <div class="invalid-feedback">
+                                hh:mm-hh:mm
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row col-6">
+                        <label class="col-sm-3 col-form-label">Địa điểm</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control is-valid" id="location-input">
+                            <div class="invalid-feedback">
+                                0 < val.length < 20
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row col-6">
+                        <label class="col-sm-3 col-form-label">Loại lớp</label>
+                        <select class="custom-select col-9" id="is-theory-class-select">
+                            <option value="1">Lớp LT</option>
+                            <option value="0">Lớp BT</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="save">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Xoá môn học</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    Bạn có chắc chắn không?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-danger" id="delete">Xoá</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid m-1">
+        <div class="row justify-content-between">
+            <btn class="btn btn-success" id="them-mon">
+                Thêm môn học
+            </btn>
+            <a href="index.html">
+                <btn class="btn btn-info" >
+                    Quay lại thời khoá biểu
+                </btn>
+            </a>
+        </div>
+    </div>
+    <div id="site-table-data">
+        <div class="container-fluid table-responsive">
+            <table class="table-bordered table text-center ">
+                <tr>
+                    <td>name</td>
+                    <td>subjectId</td>
+                    <td>classId</td>
+                    <td>week</td>
+                    <td>indexDay</td>
+                    <td>time</td>
+                    <td>location</td>
+                    <td>isThory...</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="my-regex.js"></script>
+    <script src="ajax.js"></script>
+    <script src="subject-manager.js"></script>
+</body>
+
+</html>

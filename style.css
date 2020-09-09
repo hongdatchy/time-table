@@ -5,23 +5,38 @@ ul{
 li{
     margin-bottom: 10px;
 }
-@media only screen and (min-width: 666px){
+@media only screen and (max-width: 666px){
     table{
         min-height: 480px;
     }
     #site-time-table #control{
-        left: 50%;
-        margin-left: -150px;
-        width: 250px;
+        left: 0;
+    margin-left: 0;
+    width: 100%;
+    }
+    #crete-subject{
+        display: none;
     }
 }
 #control{
     position: fixed;
     bottom: 0px;
-    left: 0;
-    margin-left: 0;
-    width: 100%;
+    left: 50%;
+    margin-left: -150px;
+    width: 250px;
 }
 #control > div{
     width: 100%;
+}
+#btn-subject-manager{
+    position: fixed;
+    bottom: 0px;
+}
+tr{
+    height: 91px !important;
+}
+a{
+    display: block;
+    position: fixed;
+    bottom: 0;
 }

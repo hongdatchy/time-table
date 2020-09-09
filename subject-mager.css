@@ -1,0 +1,18 @@
+#create-subject-modal .modal-dialog{
+    max-width: 81% !important;
+}
+#action-col{
+    min-width: 135px;
+}
+#time-col{
+    min-width: 125px;
+}
+#location-col{
+    min-width: 125px;
+}
+#is-theory-col{
+    min-width: 125px;
+}
+td{
+    vertical-align: middle !important;
+}
