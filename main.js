@@ -20,7 +20,7 @@ setInterval(function(){
 ajaxGet("https://5f5741881a07d600167e693d.mockapi.io/api/v1/product").then(function(resole){
     myList = resole;
     console.log(myList);
-    // render(week);
+    render(week);
 })
 
 function getweek(){
