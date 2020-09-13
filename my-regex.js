@@ -1,5 +1,5 @@
 function checkLength(input){
-    if(input.value.length > 0 && input.value.length < 20) {
+    if(input.value.length > 0 && input.value.length < 30) {
         input.classList.replace("is-invalid", "is-valid");
         return true;
     }
@@ -17,7 +17,7 @@ function checkTime(input){
     }
 }
 function checkDayOfWeek(input){
-    if(Number(input.value) >= 1 && Number(input.value) <= 7){
+    if(Number(input.value) >= 2 && Number(input.value) <= 8){
         input.classList.replace("is-invalid", "is-valid");
         return true;
     }else{
