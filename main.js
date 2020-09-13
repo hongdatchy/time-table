@@ -19,7 +19,6 @@ setInterval(function(){
 }, 1000);
 ajaxGet("https://5f5741881a07d600167e693d.mockapi.io/api/v1/product").then(function(resole){
     myList = resole;
-    console.log(myList);
     getweek();
     render(week);
     updateShowWeek(week);
