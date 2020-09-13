@@ -1,5 +1,5 @@
 let myList = []
-let week = 1, dayStart = new Date("9-7-2020"), nowWeek;
+let week , dayStart = new Date("9-7-2020"), nowWeek;// dayStart phải là thứ 2
 let previous = document.getElementById("previous");
 let next = document.getElementById("next");
 let showWeek = document.getElementById("show-week");
@@ -20,14 +20,16 @@ setInterval(function(){
 ajaxGet("https://5f5741881a07d600167e693d.mockapi.io/api/v1/product").then(function(resole){
     myList = resole;
     console.log(myList);
+    getweek();
     render(week);
+    updateShowWeek(week);
 })
 
 function getweek(){
-    week += Math.floor((new Date().getTime() - dayStart.getTime())/(7*1000*24*3600));
+    week = Math.ceil((new Date().getTime() - dayStart.getTime())/(7*1000*24*3600));
     nowWeek = week;
 }
-getweek();
+
 function render(week){
     thisWeekList = myList.filter(function(item){
         for(let i=0; i< item.week.length; i++){
@@ -40,7 +42,7 @@ function render(week){
     for(let i=0; i< 7; i++){
         let thisDayList = thisWeekList
         .filter(function(item){
-            return item.time.indexDay == i+1;
+            return item.time.indexDay == i+2;
         })
         .sort(function(a,b){
             return a.time.start.split(":")[0] - b.time.start.split(":")[0];
@@ -74,7 +76,7 @@ function myMap(list){
                 </li>`
     })
 }
-updateShowWeek(week);
+
 next.onclick = function(){
     if(week<18){
         week++;
@@ -97,5 +99,3 @@ function updateShowWeek(week){
         showWeek.classList.remove("bg-danger")
     }
 }
-
-
