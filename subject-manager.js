@@ -79,14 +79,16 @@ document.addEventListener("click", function(e){
         }
     }
 });
+
+// confirm delete
 myDelete.onclick = function(){
-    
     $("#delete-modal").modal("hide");
     ajaxDelete("https://5f5741881a07d600167e693d.mockapi.io/api/v1/product", myList[indexSelectSubject].id);
     myList.splice(indexSelectSubject,1);
     render();
 }
 
+// them
 $("#them-mon").click(function(){
     $("#create-subject-modal").modal("show");
     checkAction = "create";
@@ -109,279 +111,553 @@ isTheoryClassSelect.onchange = function(){
     this.value == 1 ? subject.isTheoryClass = true: subject.isTheoryClass = false; 
 }
 mySave.onclick = function(){
-    // lấy dữ liệu vào
+    // lấy dữ liệu vào subject
     subject.name = nameInput.value;
     subject.classId = classIdInput.value;
     subject.subjectId = subjectIdInput.value;
     let arrWeek =[];
-    if(weekInput.value.indexOf("-") >0){
-        let firstWeek = weekInput.value.split("-")[0];
-        let lastWeek = weekInput.value.split("-")[1];
+    console.log(weekInput.value.indexOf("-"));
+    if(weekInput.value.indexOf("-") > 0){
+        let firstWeek = Number(weekInput.value.split("-")[0]);
+        let lastWeek = Number(weekInput.value.split("-")[1]);
         for(let i=firstWeek; i<= lastWeek; i++){
             arrWeek.push(String(i));
         }
-    }else{
+        subject.week = arrWeek;
+    }else if(weekInput.value.indexOf(",") > 0){
         let week = weekInput.value.split(",");
         for(let i=0; i< week.length; i++){
             arrWeek.push(week[i]);
         }
+        subject.week = arrWeek;
+    }else{
+        arrWeek.push(weekInput.value);
+        subject.week= arrWeek;
     }
-    subject.week = arrWeek;
     subject.time.indexDay = dayInput.value;
     subject.location = locationInput.value;
     subject.time.start = timeInput.value.split("-")[0];
     subject.time.end = timeInput.value.split("-")[1];
-    checkTime(timeInput)
     if(checkLength(nameInput)&& checkLength2(classIdInput)&&checkLength2(subjectIdInput)&& checkLength(locationInput) && checkDayOfWeek(dayInput)&& checkTime(timeInput) && checkWeek(weekInput)
     ){
         if(checkAction == "create"){
             myList.push(subject);
             ajaxPost("https://5f5741881a07d600167e693d.mockapi.io/api/v1/product",subject ).then(function(){
-                getSubjectList();
-                console.log(myList);
+                getSubjectList().then(function(){
+                    render();
+                });
             });
-        }else{
-            ajaxPut("https://5f5741881a07d600167e693d.mockapi.io/api/v1/product",subject );
+        } 
+        if(checkAction == "update"){
             myList[indexSelectSubject] = subject;
+            ajaxPut("https://5f5741881a07d600167e693d.mockapi.io/api/v1/product",subject );
+            render();
         }
-        render();
+        
         $("#create-subject-modal").modal("hide");
     } 
 }
 
 // let myList = [
 //     {
-//         classId: 119887,
-//         subjectId : "ED3200",
-//         name: "Kĩ năng mềm",
-//         isTheoryClass: true,
-//         week: ["2", "4", "6", "8", "12", "14", "16", "18"],
-//         time:{
-//             indexDay: 5,
-//             start: "12:30",
-//             end: "14:55",
-//         },
-//         location: "D9-101"
+//       "id": "1",
+//       "classId": 119887,
+//       "subjectId": "ED3200",
+//       "name": "Kĩ năng mềm",
+//       "isTheoryClass": true,
+//       "week": [
+//         "2",
+//         "4",
+//         "6",
+//         "8",
+//         "12",
+//         "14",
+//         "16",
+//         "18"
+//       ],
+//       "time": {
+//         "indexDay": 5,
+//         "start": "12:30",
+//         "end": "14:55"
+//       },
+//       "location": "D9-101"
 //     },
 //     {
-//         classId: 119045,
-//         subjectId : "ET2020",
-//         name: "Technical",
-//         isTheoryClass: true,
-//         week: ["2","3","4","5","6","7","8","9","11","12","13","14","15","16","17","18"],
-//         time:{
-//             indexDay: 3,
-//             start: "06:45",
-//             end: "10:05",
-//         },
-//         location: "TC-408"
+//       "id": "2",
+//       "classId": 119045,
+//       "subjectId": "ET2020",
+//       "name": "Technical",
+//       "isTheoryClass": true,
+//       "week": [
+//         "2",
+//         "3",
+//         "4",
+//         "5",
+//         "6",
+//         "7",
+//         "8",
+//         "9",
+//         "11",
+//         "12",
+//         "13",
+//         "14",
+//         "15",
+//         "16",
+//         "17",
+//         "18"
+//       ],
+//       "time": {
+//         "indexDay": 3,
+//         "start": "06:45",
+//         "end": "10:05"
+//       },
+//       "location": "TC-408"
 //     },
 //     {
-//         classId: 119036,
-//         subjectId : "ET3210",
-//         name: "Trường điện từ",
-//         isTheoryClass: true,
-//         week: ["2","3","4","5","6","7","8","9","11","12","13","14","15","16","17","18"],
-//         time:{
-//             indexDay: 2,
-//             start: "09:20",
-//             end: "11:45",
-//         },
-//         location: "TC-408"
+//       "id": "3",
+//       "classId": 119036,
+//       "subjectId": "ET3210",
+//       "name": "Trường điện từ",
+//       "isTheoryClass": true,
+//       "week": [
+//         "2",
+//         "3",
+//         "4",
+//         "5",
+//         "6",
+//         "7",
+//         "8",
+//         "9",
+//         "11",
+//         "12",
+//         "13",
+//         "14",
+//         "15",
+//         "16",
+//         "17",
+//         "18"
+//       ],
+//       "time": {
+//         "indexDay": 2,
+//         "start": "09:20",
+//         "end": "11:45"
+//       },
+//       "location": "TC-408"
 //     },
 //     {
-//         classId: 698857,
-//         subjectId : "ET3210",
-//         name: "Trường điện từ",
-//         isTheoryClass: false,
-//         week: ["9", "14", "18"],
-//         time:{
-//             indexDay: 4,
-//             start: "12:30",
-//             end: "14:55",
-//         },
-//         location: "C9-309A"
+//       "id": "4",
+//       "classId": 698857,
+//       "subjectId": "ET3210",
+//       "name": "Trường điện từ",
+//       "isTheoryClass": false,
+//       "week": [
+//         "9",
+//         "14",
+//         "18"
+//       ],
+//       "time": {
+//         "indexDay": 4,
+//         "start": "12:30",
+//         "end": "14:55"
+//       },
+//       "location": "C9-309A"
 //     },
 //     {
-//         classId: 119050,
-//         subjectId : "ET3250",
-//         name: "Thông tin số",
-//         isTheoryClass: true,
-//         week: ["2","3","4","5","6","7","8","9","11","12","13","14","15","16","17","18"],
-//         time:{
-//             indexDay: 4,
-//             start: "06:45",
-//             end: "09:10",
-//         },
-//         location: "TC-408"
+//       "id": "5",
+//       "classId": 119050,
+//       "subjectId": "ET3250",
+//       "name": "Thông tin số",
+//       "isTheoryClass": true,
+//       "week": [
+//         "2",
+//         "3",
+//         "4",
+//         "5",
+//         "6",
+//         "7",
+//         "8",
+//         "9",
+//         "11",
+//         "12",
+//         "13",
+//         "14",
+//         "15",
+//         "16",
+//         "17",
+//         "18"
+//       ],
+//       "time": {
+//         "indexDay": 4,
+//         "start": "06:45",
+//         "end": "09:10"
+//       },
+//       "location": "TC-408"
 //     },
 //     {
-//         classId: 699323,
-//         subjectId : "ET3250",
-//         name: "Thông tin số",
-//         isTheoryClass: false,
-//         week: ["6", "11", "15"],
-//         time:{
-//             indexDay: 4,
-//             start: "12:30",
-//             end: "14:55",
-//         },
-//         location: "C9-202"
+//       "id": "6",
+//       "classId": 699323,
+//       "subjectId": "ET3250",
+//       "name": "Thông tin số",
+//       "isTheoryClass": false,
+//       "week": [
+//         "6",
+//         "11",
+//         "15"
+//       ],
+//       "time": {
+//         "indexDay": 4,
+//         "start": "12:30",
+//         "end": "14:55"
+//       },
+//       "location": "C9-202"
 //     },
 //     {
-//         classId: 119054,
-//         subjectId : "ET3310",
-//         name: "Lý thuyết mật mã",
-//         isTheoryClass: true,
-//         week: ["2","3","4","5","6","7","8","9","11","12","13","14","15","16","17","18"],
-//         time:{
-//             indexDay: 2,
-//             start: "12:30",
-//             end: "15:50",
-//         },
-//         location: "TC-210"
+//       "id": "7",
+//       "classId": 119054,
+//       "subjectId": "ET3310",
+//       "name": "Lý thuyết mật mã",
+//       "isTheoryClass": true,
+//       "week": [
+//         "2",
+//         "3",
+//         "4",
+//         "5",
+//         "6",
+//         "7",
+//         "8",
+//         "9",
+//         "11",
+//         "12",
+//         "13",
+//         "14",
+//         "15",
+//         "16",
+//         "17",
+//         "18"
+//       ],
+//       "time": {
+//         "indexDay": 2,
+//         "start": "12:30",
+//         "end": "15:50"
+//       },
+//       "location": "TC-210"
 //     },
 //     {
-//         classId: 119061,
-//         subjectId : "ET4020",
-//         name: "Xử lý tín hiệu số",
-//         isTheoryClass: true,
-//         week: ["2","3","4","5","6","7","8","9","11","12","13","14","15","16","17","18"],
-//         time:{
-//             indexDay: 5,
-//             start: "15:05",
-//             end: "17:30",
-//         },
-//         location: "TC-210"
+//       "id": "8",
+//       "classId": 119061,
+//       "subjectId": "ET4020",
+//       "name": "Xử lý tín hiệu số",
+//       "isTheoryClass": true,
+//       "week": [
+//         "2",
+//         "3",
+//         "4",
+//         "5",
+//         "6",
+//         "7",
+//         "8",
+//         "9",
+//         "11",
+//         "12",
+//         "13",
+//         "14",
+//         "15",
+//         "16",
+//         "17",
+//         "18"
+//       ],
+//       "time": {
+//         "indexDay": 5,
+//         "start": "15:05",
+//         "end": "17:30"
+//       },
+//       "location": "TC-210"
 //     },
 //     {
-//         classId: 698794,
-//         subjectId : "ET4020",
-//         name: "Xử lý tín hiệu số",
-//         isTheoryClass: false,
-//         week: ["8", "12", "15"],
-//         time:{
-//             indexDay: 6,
-//             start: "06:45",
-//             end: "09:10",
-//         },
-//         location: "T-306"
+//       "id": "9",
+//       "classId": 698794,
+//       "subjectId": "ET4020",
+//       "name": "Xử lý tín hiệu số",
+//       "isTheoryClass": false,
+//       "week": [
+//         "8",
+//         "12",
+//         "15"
+//       ],
+//       "time": {
+//         "indexDay": 6,
+//         "start": "06:45",
+//         "end": "09:10"
+//       },
+//       "location": "T-306"
 //     },
 //     {
-//         classId: 119069,
-//         subjectId : "ET4070",
-//         name: "Cơ sở truyền số liệu",
-//         isTheoryClass: true,
-//         week: ["2","3","4","5","6","7","8","9","11","12","13","14","15","16","17","18"],
-//         time:{
-//             indexDay: 3,
-//             start: "12:30",
-//             end: "14:55",
-//         },
-//         location: "TC-210"
+//       "id": "10",
+//       "classId": 119069,
+//       "subjectId": "ET4070",
+//       "name": "Cơ sở truyền số liệu",
+//       "isTheoryClass": true,
+//       "week": [
+//         "2",
+//         "3",
+//         "4",
+//         "5",
+//         "6",
+//         "7",
+//         "8",
+//         "9",
+//         "11",
+//         "12",
+//         "13",
+//         "14",
+//         "15",
+//         "16",
+//         "17",
+//         "18"
+//       ],
+//       "time": {
+//         "indexDay": 3,
+//         "start": "12:30",
+//         "end": "14:55"
+//       },
+//       "location": "TC-210"
 //     },
 //     {
-//         classId: 699334,
-//         subjectId : "ET4070",
-//         name: "Cơ sở truyền số liệu",
-//         isTheoryClass: false,
-//         week: ["5", "9", "14"],
-//         time:{
-//             indexDay: 2,
-//             start: "06:45",
-//             end: "09:10",
-//         },
-//         location: "C9-201"
+//       "id": "11",
+//       "classId": 699334,
+//       "subjectId": "ET4070",
+//       "name": "Cơ sở truyền số liệu",
+//       "isTheoryClass": false,
+//       "week": [
+//         "5",
+//         "9",
+//         "14"
+//       ],
+//       "time": {
+//         "indexDay": 2,
+//         "start": "06:45",
+//         "end": "09:10"
+//       },
+//       "location": "C9-201"
 //     },
 //     {
-//         classId: 698336,
-//         subjectId : "FL0350",
-//         name: "TOEIC 350",
-//         isTheoryClass: true,
-//         week: ["2","3","4","5","6","7","8","9","11","12","13","14","15","16","17","18"],
-//         time:{
-//             indexDay: 4,
-//             start: "18:00",
-//             end: "20:30",
-//         },
-//         location: "C3B-CFL"
+//       "id": "12",
+//       "classId": 698336,
+//       "subjectId": "FL0350",
+//       "name": "TOEIC 350",
+//       "isTheoryClass": true,
+//       "week": [
+//         "2",
+//         "3",
+//         "4",
+//         "5",
+//         "6",
+//         "7",
+//         "8",
+//         "9",
+//         "11",
+//         "12",
+//         "13",
+//         "14",
+//         "15",
+//         "16",
+//         "17",
+//         "18"
+//       ],
+//       "time": {
+//         "indexDay": 4,
+//         "start": "18:00",
+//         "end": "20:30"
+//       },
+//       "location": "C3B-CFL"
 //     },
 //     {
-//         classId: 698336,
-//         subjectId : "FL0350",
-//         name: "TOEIC 350",
-//         isTheoryClass: true,
-//         week: ["2","3","4","5","6","7","8","9","11","12","13","14","15","16","17","18"],
-//         time:{
-//             indexDay: 7,
-//             start: "18:00",
-//             end: "20:30",
-//         },
-//         location: "TC-210"
+//       "id": "13",
+//       "classId": 698336,
+//       "subjectId": "FL0350",
+//       "name": "TOEIC 350",
+//       "isTheoryClass": true,
+//       "week": [
+//         "2",
+//         "3",
+//         "4",
+//         "5",
+//         "6",
+//         "7",
+//         "8",
+//         "9",
+//         "11",
+//         "12",
+//         "13",
+//         "14",
+//         "15",
+//         "16",
+//         "17",
+//         "18"
+//       ],
+//       "time": {
+//         "indexDay": 7,
+//         "start": "18:00",
+//         "end": "20:30"
+//       },
+//       "location": "TC-210"
 //     },
 //     {
-//         classId: 638563,
-//         subjectId : "PE2801",
-//         name: "Nhảy xa",
-//         isTheoryClass: true,
-//         week: ["2","3","4","5","6","7","8","9","11","12","13","14","15","16","17","18"],
-//         time:{
-//             indexDay: 5,
-//             start: "08:00",
-//             end: "09:00",
-//         },
-//         location: "San1"
+//       "id": "14",
+//       "classId": 638563,
+//       "subjectId": "PE2801",
+//       "name": "Nhảy xa",
+//       "isTheoryClass": true,
+//       "week": [
+//         "2",
+//         "3",
+//         "4",
+//         "5",
+//         "6",
+//         "7",
+//         "8",
+//         "9",
+//         "11",
+//         "12",
+//         "13",
+//         "14",
+//         "15",
+//         "16",
+//         "17",
+//         "18"
+//       ],
+//       "time": {
+//         "indexDay": 5,
+//         "start": "08:00",
+//         "end": "09:00"
+//       },
+//       "location": "San1"
 //     },
 //     {
-//         classId: 0,
-//         subjectId : "",
-//         name: "Java lv3",
-//         isTheoryClass: false,
-//         week: ["1","2","3","4","5","6","7","8","9","11","12","13","14","15","16","17","18"],
-//         time:{
-//             indexDay: 3,
-//             start: "17:45",
-//             end: "19:30",
-//         },
-//         location: "inperial "
+//       "id": "15",
+//       "classId": 0,
+//       "subjectId": "",
+//       "name": "Java lv3",
+//       "isTheoryClass": false,
+//       "week": [
+//         "1",
+//         "2",
+//         "3",
+//         "4",
+//         "5",
+//         "6",
+//         "7",
+//         "8",
+//         "9",
+//         "11",
+//         "12",
+//         "13",
+//         "14",
+//         "15",
+//         "16",
+//         "17",
+//         "18"
+//       ],
+//       "time": {
+//         "indexDay": 3,
+//         "start": "17:45",
+//         "end": "19:30"
+//       },
+//       "location": "inperial "
 //     },
 //     {
-//         classId: 0,
-//         subjectId : "",
-//         name: "Java lv3",
-//         isTheoryClass: false,
-//         week: ["1","2","3","4","5","6","7","8","9","11","12","13","14","15","16","17","18"],
-//         time:{
-//             indexDay: 5,
-//             start: "17:45",
-//             end: "19:30",
-//         },
-//         location: "inperial "
+//       "id": "16",
+//       "classId": 0,
+//       "subjectId": "",
+//       "name": "Java lv3",
+//       "isTheoryClass": false,
+//       "week": [
+//         "1",
+//         "2",
+//         "3",
+//         "4",
+//         "5",
+//         "6",
+//         "7",
+//         "8",
+//         "9",
+//         "11",
+//         "12",
+//         "13",
+//         "14",
+//         "15",
+//         "16",
+//         "17",
+//         "18"
+//       ],
+//       "time": {
+//         "indexDay": 5,
+//         "start": "17:45",
+//         "end": "19:30"
+//       },
+//       "location": "inperial "
 //     },
 //     {
-//         classId: 0,
-//         subjectId : "",
-//         name: "Họp lab",
-//         isTheoryClass: false,
-//         week: ["1"],
-//         time:{
-//             indexDay: 3,
-//             start: "16:30",
-//             end: "17:30",
-//         },
-//         location: "inperial "
+//       "id": "17",
+//       "classId": 0,
+//       "subjectId": "",
+//       "name": "Họp lab",
+//       "isTheoryClass": false,
+//       "week": [
+//         "1"
+//       ],
+//       "time": {
+//         "indexDay": 3,
+//         "start": "16:30",
+//         "end": "17:30"
+//       },
+//       "location": "inperial "
 //     },
 //     {
-//         classId: 0,
-//         subjectId : "",
-//         name: "FrontEnd",
-//         isTheoryClass: false,
-//         week: ["2","3","4","5","6","7","8","9","11","12","13","14","15","16","17","18"],
-//         time:{
-//             indexDay: 3,
-//             start: "15:00",
-//             end: "17:30",
-//         },
-//         location: "inperial "
+//       "id": "18",
+//       "classId": "0",
+//       "subjectId": "",
+//       "name": "FrontEnd",
+//       "isTheoryClass": false,
+//       "week": [
+//         "2",
+//         "3",
+//         "4",
+//         "5",
+//         "6",
+//         "7",
+//         "8",
+//         "9",
+//         "11",
+//         "12",
+//         "13",
+//         "14",
+//         "15",
+//         "16",
+//         "17",
+//         "18"
+//       ],
+//       "time": {
+//         "indexDay": "3",
+//         "start": "15:00",
+//         "end": "17:30"
+//       },
+//       "location": "inperial "
+//     },
+//     {
+//       "id": "19",
+//       "name": "Tìm phòng trọ a Quân và Yến",
+//       "subjectId": "",
+//       "classId": "0",
+//       "week": [
+//         "2"
+//       ],
+//       "isTheoryClass": false,
+//       "time": {
+//         "indexDay": "7",
+//         "start": "6:00",
+//         "end": "11:30"
+//       },
+//       "location": "Hà Nội"
 //     }
 // ]
