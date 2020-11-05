@@ -62,7 +62,7 @@ function render(week){
 }
 function myMap(list){
     return list.map(function(item){
-        return `<li class=${item.isTheoryClass? "bg-success": "bg-warning"}>
+        return `<li class=${item.isTheoryClass? "bg-success": "bg-danger"}>
                     <div class="time">
                     ${item.time.start} - ${item.time.end}
                     </div>
