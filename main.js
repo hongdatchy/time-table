@@ -15,7 +15,7 @@ let passwordInput = document.getElementById("password-input");
 let btnLogin = document.getElementById("btn-login");
 setInterval(function(){
     let date = new Date();
-    today.innerHTML = `${date.getDay() == 0 ? "Chủ Nhật" : "Thứ "+ (date.getDay()+1)} <span class ="text-danger">${date.getHours() < 10 ? "0" + date.getHours():date.getHours()}:${date.getMinutes() < 10 ? "0" + date.getMinutes():date.getMinutes()}:${date.getSeconds() < 10 ? "0" + date.getSeconds():date.getSeconds()}</span> Time không ngừng lại => đừng dại ngồi chơi :))`;
+    today.innerHTML = `${date.getDay() == 0 ? "Chủ Nhật" : "Thứ "+ (date.getDay()+1)} <span class ="text-danger">${date.getHours() < 10 ? "0" + date.getHours():date.getHours()}:${date.getMinutes() < 10 ? "0" + date.getMinutes():date.getMinutes()}:${date.getSeconds() < 10 ? "0" + date.getSeconds():date.getSeconds()}</span> chiến thắng chính bản thân mình!`;
 }, 1000);
 ajaxGet("https://5f5741881a07d600167e693d.mockapi.io/api/v1/product").then(function(resole){
     myList = resole;
